@@ -57,15 +57,17 @@ class ResultScreen extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * .45,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'P/L :',
-                            style: TextStyle(
-                                color: profit >= 0.0
-                                    ? const Color(0xff44b581)
-                                    : Colors.red,
-                                fontSize: 26,
-                                fontWeight: FontWeight.w600),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            child: const Text(
+                              'P/L :',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                           Text(
                             '${profit.toStringAsFixed(2)}\$',
@@ -78,32 +80,42 @@ class ResultScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                      if (isFutures) ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              child: const Text(
+                                'Liquidation :',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            Text(
+                              '${liquidationPrice.toStringAsFixed(2)}\$',
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ],
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Liquidation :',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 26,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            '${liquidationPrice.toStringAsFixed(2)}\$',
-                            style: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 26,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'StopLoss :',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 26,
-                                fontWeight: FontWeight.w600),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            child: const Text(
+                              'StopLoss :',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                           Text(
                             '${stopLoss.toStringAsFixed(2)}\$',

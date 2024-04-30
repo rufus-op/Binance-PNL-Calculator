@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   lottie: ^2.3.2
   google_mobile_ads: ^3.0.0
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
