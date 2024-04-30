@@ -47,37 +47,70 @@ class ResultScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       LottieBuilder.asset(
-                        profit >= 0 ? 'assets/profit.json' : 'assets/loss.json',
-                        height: MediaQuery.of(context).size.height * .35,
+                        profit >= 0
+                            ? 'assets/profit-animation.json'
+                            : 'assets/loss.json',
+                        height: MediaQuery.of(context).size.height * .45,
                       ),
                       Row(
                         children: [
+                          Text(
+                            'P/L :',
+                            style: TextStyle(
+                                color: profit >= 0.0
+                                    ? const Color(0xff44b581)
+                                    : Colors.red,
+                                fontSize: 26,
+                                fontWeight: FontWeight.w600),
+                          ),
                           Text(
                             '${profit.toStringAsFixed(2)}\$',
                             style: TextStyle(
                                 color: profit >= 0.0
                                     ? const Color(0xff44b581)
                                     : Colors.red,
-                                fontSize: 30,
+                                fontSize: 26,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            'Liquidation :',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 26,
                                 fontWeight: FontWeight.w600),
                           ),
                           Text(
                             '${liquidationPrice.toStringAsFixed(2)}\$',
                             style: const TextStyle(
-                                color: Colors.blue,
-                                fontSize: 30,
+                                color: Colors.red,
+                                fontSize: 26,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            'StopLoss :',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 26,
                                 fontWeight: FontWeight.w600),
                           ),
                           Text(
                             '${stopLoss.toStringAsFixed(2)}\$',
                             style: const TextStyle(
-                                color: Colors.blue,
-                                fontSize: 30,
-                                fontWeight: FontWeight.w600),
+                                color: Colors.red,
+                                fontSize: 26,
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
