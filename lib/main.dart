@@ -5,7 +5,12 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ResultScreen(
+    isFutures: true,
+    liquidationPrice: 2,
+    profit: 34,
+    stopLoss: 1,
+  ));
 }
 
 class MyApp extends StatefulWidget {
