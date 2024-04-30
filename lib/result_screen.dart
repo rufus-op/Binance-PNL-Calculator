@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class ResultScreen extends StatelessWidget {
-  ResultScreen(this.profit);
-  double profit;
+  const ResultScreen(
+      {super.key,
+      required this.profit,
+      required this.stopLoss,
+      required this.isFutures,
+      required this.liquidationPrice});
+  final double profit;
+  final double liquidationPrice;
+  final double stopLoss;
+  final bool isFutures;
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +54,32 @@ class ResultScreen extends StatelessWidget {
                         profit >= 0 ? 'assets/profit.json' : 'assets/loss.json',
                         height: MediaQuery.of(context).size.height * .35,
                       ),
-                      Text(
-                        '${profit.toStringAsFixed(2)}\$',
-                        style: TextStyle(
-                            color: profit >= 0.0
-                                ? const Color(0xff44b581)
-                                : Colors.red,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600),
+                      Row(
+                        children: [
+                          Text(
+                            '${profit.toStringAsFixed(2)}\$',
+                            style: TextStyle(
+                                color: profit >= 0.0
+                                    ? const Color(0xff44b581)
+                                    : Colors.red,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            '${liquidationPrice.toStringAsFixed(2)}\$',
+                            style: const TextStyle(
+                                color: Colors.blue,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            '${stopLoss.toStringAsFixed(2)}\$',
+                            style: const TextStyle(
+                                color: Colors.blue,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
                       ),
                     ],
                   ),

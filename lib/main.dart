@@ -1,7 +1,5 @@
 import 'package:binance_calcu/components/textfield.dart';
-import 'package:binance_calcu/home.dart';
 import 'package:binance_calcu/result_screen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -23,6 +21,7 @@ class _MyAppState extends State<MyApp> {
   final _buyPriceController = TextEditingController();
   final _sellPriceController = TextEditingController();
   final _quantityController = TextEditingController();
+  final _stopLossController = TextEditingController();
   final _leverageController = TextEditingController();
   bool _isFutures = true;
   bool _isLong = true;
@@ -30,6 +29,8 @@ class _MyAppState extends State<MyApp> {
   bool _isUSD_M_Futtures = true;
   bool isSpot = true;
   double _profit = 0;
+  double _stopLoss = 0;
+  double _liquidationPrice = 0;
   String adId = 'ca-app-pub-3355640798916544/7371479478';
   late BannerAd bannerAd;
   initBannerAd() {
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> {
     _buyPriceController.dispose();
     _sellPriceController.dispose();
     _quantityController.dispose();
+    _stopLossController.dispose();
     _leverageController.dispose();
     bannerAd.dispose();
     super.dispose();
@@ -66,15 +68,63 @@ class _MyAppState extends State<MyApp> {
     double buyPrice = double.parse(_buyPriceController.text);
     double sellPrice = double.parse(_sellPriceController.text);
     double quantity = double.parse(_quantityController.text);
+
+    double initialMarginRatio =
+        1; // Example value, adjust based on actual trading conditions
+
+    double stopLoss = double.parse(_stopLossController.text.trim().isNotEmpty
+        ? _stopLossController.text
+        : '0');
+
     double leverage = _isFutures ? double.parse(_leverageController.text) : 1;
 
     double profit = _isFutures
         ? calculateFuturesProfit(
             buyPrice, sellPrice, quantity, lev(leverage).toDouble(), _isLong)
         : calculateSpotProfit(buyPrice, sellPrice, quantity);
+    double liquidationPrice = _isFutures
+        ? calculateLiquidationPrice(
+            buyPrice, initialMarginRatio, leverage, _isLong)
+        : 0.0; // Liquidation price is not applicable for spot trading
+
     setState(() {
       _profit = profit;
+      _liquidationPrice = liquidationPrice;
+      _stopLoss = _isFutures
+          ? calculateFuturesProfit(
+              buyPrice, stopLoss, quantity, lev(leverage).toDouble(), _isLong)
+          : calculateSpotProfit(buyPrice, stopLoss, quantity);
     });
+  }
+
+  double calculateLiquidationPrice(double entryPrice, double initialMarginRatio,
+      double leverage, bool isLong) {
+    return isLong
+        ? entryPrice / (1 + (initialMarginRatio / leverage))
+        : entryPrice / (1 - (initialMarginRatio / leverage));
+  }
+
+  double calculateSpotProfit(
+      double buyPrice, double sellPrice, double quantity) {
+    double profit = (((1 / buyPrice) - (1 / sellPrice)) * quantity) * sellPrice;
+    return profit;
+  }
+
+  double lev(double leve) {
+    if (leve > 0) {
+      return leve;
+    }
+    return leve = 1;
+  }
+
+  double calculateFuturesProfit(double buyPrice, double sellPrice,
+      double quantity, double leverage, bool isLong) {
+    double profitLong =
+        (((1 / buyPrice) - (1 / sellPrice)) * quantity * leverage) * sellPrice;
+    double profitShort =
+        (((1 / sellPrice) - (1 / buyPrice)) * quantity * leverage) * sellPrice;
+
+    return isLong ? profitLong : profitShort;
   }
 
   @override
@@ -134,6 +184,7 @@ class _MyAppState extends State<MyApp> {
                               isSpot = true;
                               _isFutures = false;
                               _quantityController.clear();
+                              _stopLossController.clear();
                               _buyPriceController.clear();
                               _sellPriceController.clear();
                               _profit = 0;
@@ -158,6 +209,7 @@ class _MyAppState extends State<MyApp> {
                               isSpot = false;
                               _isFutures = true;
                               _quantityController.clear();
+                              _stopLossController.clear();
                               _buyPriceController.clear();
                               _sellPriceController.clear();
                               _profit = 0;
@@ -351,6 +403,19 @@ class _MyAppState extends State<MyApp> {
                   ),
                   TextFieldCustom(quantityController: _sellPriceController),
                   const SizedBox(
+                    height: 8,
+                  ),
+                  const Text(
+                    'Stop loss',
+                    style: TextStyle(
+                        // color: Colors.black,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  TextFieldCustom(quantityController: _stopLossController),
+                  const SizedBox(
                     height: 10,
                   ),
                   Builder(
@@ -395,7 +460,12 @@ class _MyAppState extends State<MyApp> {
                             _calculateProfit();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => ResultScreen(_profit),
+                                builder: (context) => ResultScreen(
+                                  isFutures: _isFutures,
+                                  profit: _profit,
+                                  liquidationPrice: _liquidationPrice,
+                                  stopLoss: _stopLoss,
+                                ),
                               ),
                             );
                           },
@@ -433,26 +503,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-}
-
-double calculateSpotProfit(double buyPrice, double sellPrice, double quantity) {
-  double profit = (((1 / buyPrice) - (1 / sellPrice)) * quantity) * sellPrice;
-  return profit;
-}
-
-double lev(double leve) {
-  if (leve > 0) {
-    return leve;
-  }
-  return leve = 1;
-}
-
-double calculateFuturesProfit(double buyPrice, double sellPrice,
-    double quantity, double leverage, bool isLong) {
-  double profitLong =
-      (((1 / buyPrice) - (1 / sellPrice)) * quantity * leverage) * sellPrice;
-  double profitShort =
-      (((1 / sellPrice) - (1 / buyPrice)) * quantity * leverage) * sellPrice;
-
-  return isLong ? profitLong : profitShort;
 }
