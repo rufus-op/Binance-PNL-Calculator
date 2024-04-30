@@ -14,10 +14,6 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-
-
-
-
 class _MyAppState extends State<MyApp> {
   // Brightness _brightness = Brightness.dark;
   bool _isDark = false;
@@ -144,11 +140,10 @@ class _MyAppState extends State<MyApp> {
         // backgroundColor: Colors.white.withOpacity(.8),
         appBar: AppBar(
           toolbarHeight: 30,
-          title: const Text('Binance Profit Calculator'),
+          title: const Text('Crypto P/L Calculator'),
           actions: [
-            InkWell(
+            GestureDetector(
                 onTap: () {
-                  // widget.changeBrightness;
                   setState(() {
                     _isDark = !_isDark;
                   });
@@ -161,7 +156,7 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
