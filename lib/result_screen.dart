@@ -51,33 +51,39 @@ class ResultScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        LottieBuilder.asset(
-                          profit >= 0
-                              ? 'assets/profit-animation.json'
-                              : 'assets/loss.json',
-                          height: MediaQuery.of(context).size.height * .45,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: LottieBuilder.asset(
+                            profit >= 0
+                                ? 'assets/profit-animation-green.json'
+                                : 'assets/loss.json',
+                            height: MediaQuery.of(context).size.height * .45,
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.38,
+                              width: MediaQuery.of(context).size.width * 0.35,
                               child: const Text(
-                                'Profit/Loss :',
+                                'Profit/Loss',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
-                            Text(
-                              '${profit.toStringAsFixed(2)}\$',
-                              style: TextStyle(
-                                  color: profit >= 0.0
-                                      ? const Color(0xff44b581)
-                                      : Colors.red,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: Text(
+                                '${profit.toStringAsFixed(2)}\$',
+                                style: TextStyle(
+                                    color: profit >= 0.0
+                                        ? const Color(0xff44b581)
+                                        : Colors.red,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500),
+                              ),
                             ),
                           ],
                         ),
@@ -86,21 +92,24 @@ class ResultScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.4,
+                                width: MediaQuery.of(context).size.width * 0.35,
                                 child: const Text(
-                                  'Liquidation :',
+                                  'Liquidation',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500),
                                 ),
                               ),
-                              Text(
-                                '${liquidationPrice.toStringAsFixed(2)}\$',
-                                style: const TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                child: Text(
+                                  '${liquidationPrice.toStringAsFixed(2)}\$',
+                                  style: const TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ],
                           ),
@@ -109,21 +118,24 @@ class ResultScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.4,
+                              width: MediaQuery.of(context).size.width * 0.35,
                               child: const Text(
-                                'StopLoss :',
+                                'StopLoss',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
-                            Text(
-                              '${stopLoss.toStringAsFixed(2)}\$',
-                              style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: Text(
+                                '${stopLoss.toStringAsFixed(2)}\$',
+                                style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500),
+                              ),
                             ),
                           ],
                         ),

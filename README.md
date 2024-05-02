@@ -1,4 +1,4 @@
-# binance_calcu
+# socio_calcu
 
 A new Flutter project.
 

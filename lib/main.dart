@@ -1,16 +1,11 @@
-import 'package:binance_calcu/components/textfield.dart';
-import 'package:binance_calcu/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socio_calcu/components/textfield.dart';
+import 'package:socio_calcu/result_screen.dart';
 
 void main() {
-  runApp(const ResultScreen(
-    isFutures: true,
-    liquidationPrice: 2,
-    profit: 34,
-    stopLoss: 1,
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -157,8 +152,10 @@ class _MyAppState extends State<MyApp> {
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 30,
-            title: const Text('Crypto P/L Calculator'),
+            title: const Text(
+              'Crypto P/L Calculator',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
             actions: [
               GestureDetector(
                   onTap: () async {
@@ -298,47 +295,47 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ////////////////////// Margin Mode ////////////////////////////////
 
-                    if (_isFutures)
-                      const Text(
-                        'Margin Mode*',
-                        style: TextStyle(
-                            // color: Colors.black,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    if (_isFutures)
-                      Row(
-                        children: [
-                          Checkbox(
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            value: _isIsolated,
-                            onChanged: (value) {
-                              setState(() {
-                                _isIsolated = true;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Isolated',
-                          ),
-                          const SizedBox(
-                            width: 30,
-                          ),
-                          Checkbox(
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            value: _isIsolated ? false : true,
-                            onChanged: (value) {
-                              setState(() {
-                                _isIsolated = false;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Cross',
-                          ),
-                        ],
-                      ),
+                    // if (_isFutures)
+                    //   const Text(
+                    //     'Margin Mode*',
+                    //     style: TextStyle(
+                    //         // color: Colors.black,
+                    //         fontWeight: FontWeight.w500),
+                    //   ),
+                    // if (_isFutures)
+                    //   Row(
+                    //     children: [
+                    //       Checkbox(
+                    //         materialTapTargetSize:
+                    //             MaterialTapTargetSize.shrinkWrap,
+                    //         value: _isIsolated,
+                    //         onChanged: (value) {
+                    //           setState(() {
+                    //             _isIsolated = true;
+                    //           });
+                    //         },
+                    //       ),
+                    //       const Text(
+                    //         'Isolated',
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 30,
+                    //       ),
+                    //       Checkbox(
+                    //         materialTapTargetSize:
+                    //             MaterialTapTargetSize.shrinkWrap,
+                    //         value: _isIsolated ? false : true,
+                    //         onChanged: (value) {
+                    //           setState(() {
+                    //             _isIsolated = false;
+                    //           });
+                    //         },
+                    //       ),
+                    //       const Text(
+                    //         'Cross',
+                    //       ),
+                    //     ],
+                    //   ),
                     /////////////////////////////////////////// Leverage//////////////////////
                     if (_isFutures)
                       const Text(
@@ -352,51 +349,51 @@ class _MyAppState extends State<MyApp> {
                     ),
                     if (_isFutures)
                       TextFieldCustom(quantityController: _leverageController),
-                    ///////////////////////// TOF //////////////////////////////////////
                     const SizedBox(
                       height: 8,
                     ),
-                    if (_isFutures)
-                      const Text(
-                        'Type of Futures*',
-                        style: TextStyle(
-                            // color: Colors.black,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    if (_isFutures)
-                      Row(
-                        children: [
-                          Checkbox(
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            value: _isUSD_M_Futtures,
-                            onChanged: (value) {
-                              setState(() {
-                                _isUSD_M_Futtures = true;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'USDS-M Futures',
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Checkbox(
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            value: _isUSD_M_Futtures ? false : true,
-                            onChanged: (value) {
-                              setState(() {
-                                _isUSD_M_Futtures = false;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'COIN-M Futures',
-                          ),
-                        ],
-                      ),
+                    ///////////////////////// TOF //////////////////////////////////////
+                    // if (_isFutures)
+                    //   const Text(
+                    //     'Type of Futures*',
+                    //     style: TextStyle(
+                    //         // color: Colors.black,
+                    //         fontWeight: FontWeight.w500),
+                    //   ),
+                    // if (_isFutures)
+                    //   Row(
+                    //     children: [
+                    //       Checkbox(
+                    //         materialTapTargetSize:
+                    //             MaterialTapTargetSize.shrinkWrap,
+                    //         value: _isUSD_M_Futtures,
+                    //         onChanged: (value) {
+                    //           setState(() {
+                    //             _isUSD_M_Futtures = true;
+                    //           });
+                    //         },
+                    //       ),
+                    //       const Text(
+                    //         'USDS-M Futures',
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 20,
+                    //       ),
+                    //       Checkbox(
+                    //         materialTapTargetSize:
+                    //             MaterialTapTargetSize.shrinkWrap,
+                    //         value: _isUSD_M_Futtures ? false : true,
+                    //         onChanged: (value) {
+                    //           setState(() {
+                    //             _isUSD_M_Futtures = false;
+                    //           });
+                    //         },
+                    //       ),
+                    //       const Text(
+                    //         'COIN-M Futures',
+                    //       ),
+                    //     ],
+                    //   ),
                     const Text(
                       'Entry Price*',
                       style: TextStyle(

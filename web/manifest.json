@@ -1,6 +1,6 @@
 {
-    "name": "binance_calcu",
-    "short_name": "binance_calcu",
+    "name": "socio_calcu",
+    "short_name": "socio_calcu",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

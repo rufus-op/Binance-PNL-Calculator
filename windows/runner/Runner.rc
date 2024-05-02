@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "binance_calcu" "\0"
+            VALUE "FileDescription", "socio_calcu" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "binance_calcu" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "binance_calcu.exe" "\0"
-            VALUE "ProductName", "binance_calcu" "\0"
+            VALUE "InternalName", "socio_calcu" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "socio_calcu.exe" "\0"
+            VALUE "ProductName", "socio_calcu" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
