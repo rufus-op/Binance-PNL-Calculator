@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socio_calcu/components/textfield.dart';
+import 'package:socio_calcu/components/webview_screen.dart';
 import 'package:socio_calcu/result_screen.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -142,6 +144,22 @@ class _MyAppState extends State<MyApp> {
     prefs.setBool('isDark', isDark);
   }
 
+  final List<String> _popupMenuOptions = [
+    'Fear and Greed Index',
+    'Liquidation Heatmap',
+  ];
+
+  final List<IconData> _popupMenuIcons = [
+    Icons.trending_up, // Example icon for Fear and Greed Index
+    Icons.waves_rounded, // Example icon for Liquidation Heatmap
+  ];
+  bool _showPopup = false;
+  void _togglePopup() {
+    setState(() {
+      _showPopup = !_showPopup;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -168,7 +186,45 @@ class _MyAppState extends State<MyApp> {
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(
                         _isDark ? Icons.light_mode_outlined : Icons.light_mode),
-                  ))
+                  )),
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: PopupMenuButton<String>(
+                  onSelected: (String result) {
+                    // Handle the selection of an option
+                    print(result); // For demonstration purposes
+                    setState(() {
+                      _showPopup = false; // Hide the popup menu after selection
+                    });
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      _popupMenuOptions.map((String option) {
+                    return PopupMenuItem<String>(
+                      value: option,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WebViewScreen(websiteUrl: 'https://www.youtube.com/',),
+                              ));
+                        },
+                        child: Row(
+                          children: [
+                            Icon(_popupMenuIcons[_popupMenuOptions.indexOf(
+                                option)]), // Display the corresponding icon
+                            SizedBox(width: 8), // Space between icon and text
+                            Text(option),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // Rounded corners
+                  ),
+                ),
+              ),
             ],
           ),
           body: Padding(
