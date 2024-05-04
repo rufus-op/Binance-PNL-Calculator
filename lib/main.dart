@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socio_calcu/GoogleAd/banner_ad.dart';
 import 'package:socio_calcu/components/textfield.dart';
 import 'package:socio_calcu/components/webview_screen.dart';
 import 'package:socio_calcu/result_screen.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,47 +28,14 @@ class _MyAppState extends State<MyApp> {
   final _leverageController = TextEditingController();
   bool _isFutures = true;
   bool _isLong = true;
-  bool _isIsolated = true;
-  bool _isUSD_M_Futtures = true;
+  // bool _isIsolated = true;
+  // bool _isUSD_M_Futtures = true;
   bool isSpot = true;
   double _profit = 0;
   double _stopLoss = 0;
   double _liquidationPrice = 0;
-  String adId = 'ca-app-pub-3355640798916544/7371479478';
-  late BannerAd bannerAd;
-  initBannerAd() {
-    bannerAd = BannerAd(
-        size: AdSize.largeBanner,
-        adUnitId: adId,
-        listener: BannerAdListener(
-          onAdLoaded: (ad) {},
-          onAdFailedToLoad: (ad, error) {
-            ad.dispose();
-          },
-        ),
-        request: const AdRequest());
-    bannerAd.load();
-  }
 
-  @override
-  void initState() {
-    initBannerAd();
-    _loadDarkModeSetting();
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _buyPriceController.dispose();
-    _sellPriceController.dispose();
-    _quantityController.dispose();
-    _stopLossController.dispose();
-    _leverageController.dispose();
-    bannerAd.dispose();
-    super.dispose();
-  }
-
+// Calculate Profit
   void _calculateProfit() {
     double buyPrice = double.parse(_buyPriceController.text);
     double sellPrice = double.parse(_sellPriceController.text);
@@ -102,6 +69,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+// Calculate Liquidation Price
   double calculateLiquidationPrice(double entryPrice, double initialMarginRatio,
       double leverage, bool isLong) {
     return isLong
@@ -109,12 +77,14 @@ class _MyAppState extends State<MyApp> {
         : entryPrice / (1 - (initialMarginRatio / leverage));
   }
 
+// Calculate Spot Profit
   double calculateSpotProfit(
       double buyPrice, double sellPrice, double quantity) {
     double profit = (((1 / buyPrice) - (1 / sellPrice)) * quantity) * sellPrice;
     return profit;
   }
 
+// Handle Leverage
   double lev(double leve) {
     if (leve > 0) {
       return leve;
@@ -122,6 +92,7 @@ class _MyAppState extends State<MyApp> {
     return leve = 1;
   }
 
+// Calculate Futures Profit
   double calculateFuturesProfit(double buyPrice, double sellPrice,
       double quantity, double leverage, bool isLong) {
     double profitLong =
@@ -132,6 +103,7 @@ class _MyAppState extends State<MyApp> {
     return isLong ? profitLong : profitShort;
   }
 
+// Theme
   Future<void> _loadDarkModeSetting() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -139,11 +111,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+// save theme in shared pref
   Future<void> _saveDarkModeSetting(bool isDark) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isDark', isDark);
   }
 
+// popup Menu
   final List<String> _popupMenuOptions = [
     'Fear and Greed Index',
     'Liquidation Heatmap',
@@ -156,6 +130,23 @@ class _MyAppState extends State<MyApp> {
     Icons.trending_up, // Example icon for Fear and Greed Index
     Icons.waves_rounded, // Example icon for Liquidation Heatmap
   ];
+
+  @override
+  void initState() {
+    _loadDarkModeSetting();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _buyPriceController.dispose();
+    _sellPriceController.dispose();
+    _quantityController.dispose();
+    _stopLossController.dispose();
+    _leverageController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +193,7 @@ class _MyAppState extends State<MyApp> {
                                 builder: (context) => WebViewScreen(
                                   websiteUrl: _popupMenuWebUrls[
                                       _popupMenuOptions.indexOf(option)],
+                                  websiteName: option,
                                 ),
                               ));
                         },
@@ -554,14 +546,7 @@ class _MyAppState extends State<MyApp> {
                       },
                     ),
 
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 5,
-                      ),
-                      height: bannerAd.size.height.toDouble(),
-                      width: double.infinity,
-                      child: Center(child: AdWidget(ad: bannerAd)),
-                    ),
+                    BannerAdWidget(adSize: AdSize.banner)
                   ],
                 ),
               ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lottie/lottie.dart';
+import 'package:socio_calcu/GoogleAd/banner_ad.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen(
@@ -39,10 +41,11 @@ class ResultScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: [
+                  BannerAdWidget(adSize: AdSize.banner),
                   Container(
-                    height: MediaQuery.of(context).size.height * .65,
+                    height: MediaQuery.of(context).size.height * .6,
                     width: double.infinity,
-                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    margin: const EdgeInsets.only(bottom: 20, top: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.white,
@@ -57,7 +60,7 @@ class ResultScreen extends StatelessWidget {
                             profit >= 0
                                 ? 'assets/profit-animation-green.json'
                                 : 'assets/loss.json',
-                            height: MediaQuery.of(context).size.height * .45,
+                            height: MediaQuery.of(context).size.height * .4,
                           ),
                         ),
                         Row(
