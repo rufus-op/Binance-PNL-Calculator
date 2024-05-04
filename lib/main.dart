@@ -148,17 +148,14 @@ class _MyAppState extends State<MyApp> {
     'Fear and Greed Index',
     'Liquidation Heatmap',
   ];
-
+  final List<String> _popupMenuWebUrls = [
+    'https://alternative.me/crypto/fear-and-greed-index/',
+    'https://www.coinglass.com/pro/futures/LiquidationHeatMap',
+  ];
   final List<IconData> _popupMenuIcons = [
     Icons.trending_up, // Example icon for Fear and Greed Index
     Icons.waves_rounded, // Example icon for Liquidation Heatmap
   ];
-  bool _showPopup = false;
-  void _togglePopup() {
-    setState(() {
-      _showPopup = !_showPopup;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,11 +188,7 @@ class _MyAppState extends State<MyApp> {
                 padding: const EdgeInsets.only(right: 5.0),
                 child: PopupMenuButton<String>(
                   onSelected: (String result) {
-                    // Handle the selection of an option
                     print(result); // For demonstration purposes
-                    setState(() {
-                      _showPopup = false; // Hide the popup menu after selection
-                    });
                   },
                   itemBuilder: (BuildContext context) =>
                       _popupMenuOptions.map((String option) {
@@ -206,7 +199,10 @@ class _MyAppState extends State<MyApp> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => WebViewScreen(websiteUrl: 'https://www.youtube.com/',),
+                                builder: (context) => WebViewScreen(
+                                  websiteUrl: _popupMenuWebUrls[
+                                      _popupMenuOptions.indexOf(option)],
+                                ),
                               ));
                         },
                         child: Row(

@@ -38,7 +38,7 @@ dependencies:
   lottie: ^2.3.2
   google_mobile_ads: ^3.0.0
   shared_preferences: ^2.2.3
-  webview_flutter: ^4.2.4
+  webview_flutter: 4.2.4
 
 dev_dependencies:
   flutter_test:
