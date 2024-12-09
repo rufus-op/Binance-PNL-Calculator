@@ -151,6 +151,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Crypto Calculator",
       theme: ThemeData(
           useMaterial3: true,
           brightness: _isDark ? Brightness.dark : Brightness.light),

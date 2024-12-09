@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="socio_calcu"
+        android:label="Crypto Calculator"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
