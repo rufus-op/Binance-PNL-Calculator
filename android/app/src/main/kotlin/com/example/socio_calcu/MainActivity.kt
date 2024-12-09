@@ -1,4 +1,4 @@
-package com.example.socio_calcu
+package com.enigma.crypto_calculator
 
 import io.flutter.embedding.android.FlutterActivity
 
