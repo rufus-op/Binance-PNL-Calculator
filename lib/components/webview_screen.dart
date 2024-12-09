@@ -31,22 +31,22 @@ class WebViewScreen extends StatelessWidget {
       )
       ..loadRequest(Uri.parse(websiteUrl));
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          websiteName,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        ),
-      ),
+      appBar: (websiteName != "Charts")
+          ? AppBar(
+              title: Text(websiteName,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)))
+          : null,
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
-            
               child: WebViewWidget(
                 controller: controller,
               ),
             ),
-           BannerAdWidget(adSize: AdSize.banner)
+            if (websiteName != "Charts") ...[
+              BannerAdWidget(adSize: AdSize.banner)
+            ],
           ],
         ),
       ),

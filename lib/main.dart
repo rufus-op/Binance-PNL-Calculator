@@ -121,14 +121,17 @@ class _MyAppState extends State<MyApp> {
   final List<String> _popupMenuOptions = [
     'Fear and Greed Index',
     'Liquidation Heatmap',
+    'Charts',
   ];
   final List<String> _popupMenuWebUrls = [
     'https://alternative.me/crypto/fear-and-greed-index/',
     'https://www.coinglass.com/pro/futures/LiquidationHeatMap',
+    'https://velo.xyz/chart',
   ];
   final List<IconData> _popupMenuIcons = [
-    Icons.trending_up, // Example icon for Fear and Greed Index
+    Icons.graphic_eq_rounded, // Example icon for Fear and Greed Index
     Icons.waves_rounded, // Example icon for Liquidation Heatmap
+    Icons.trending_up, // Example icon for Liquidation Heatmap
   ];
 
   @override
