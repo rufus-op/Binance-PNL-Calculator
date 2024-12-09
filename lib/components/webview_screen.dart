@@ -28,14 +28,8 @@ class WebViewScreen extends StatelessWidget {
       ..loadRequest(Uri.parse('https://velo.xyz/chart'));
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: WebViewWidget(
-                controller: controller,
-              ),
-            ),
-          ],
+        child: WebViewWidget(
+          controller: controller,
         ),
       ),
     );
