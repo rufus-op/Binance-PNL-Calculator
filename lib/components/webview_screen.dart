@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:socio_calcu/GoogleAd/banner_ad.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatelessWidget {
-  WebViewScreen({required this.websiteUrl, required this.websiteName});
-  final String websiteUrl;
-  final String websiteName;
+  WebViewScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +25,8 @@ class WebViewScreen extends StatelessWidget {
           },
         ),
       )
-      ..loadRequest(Uri.parse(websiteUrl));
+      ..loadRequest(Uri.parse('https://velo.xyz/chart'));
     return Scaffold(
-      appBar: (websiteName != "Charts")
-          ? AppBar(
-              title: Text(websiteName,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)))
-          : null,
       body: SafeArea(
         child: Column(
           children: [
@@ -44,9 +35,6 @@ class WebViewScreen extends StatelessWidget {
                 controller: controller,
               ),
             ),
-            if (websiteName != "Charts") ...[
-              BannerAdWidget(adSize: AdSize.banner)
-            ],
           ],
         ),
       ),

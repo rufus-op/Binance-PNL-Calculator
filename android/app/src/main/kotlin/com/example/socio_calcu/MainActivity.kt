@@ -1,4 +1,4 @@
-package com.enigma.crypto_calculator
+package com.enigma.velo_charts
 
 import io.flutter.embedding.android.FlutterActivity
 
