@@ -23,19 +23,9 @@ class TextFieldCustom extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.grey.shade200,
           hintText: hintText ?? "",
           contentPadding: const EdgeInsets.fromLTRB(10, 0, 0, 5),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide.none),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
     );

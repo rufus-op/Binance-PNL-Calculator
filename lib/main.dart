@@ -139,7 +139,6 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.white,
             toolbarHeight: MediaQuery.sizeOf(context).height * 0.05,
             title: const Text(
               'Crypto P/L Calculator',
@@ -194,7 +193,6 @@ class _MyAppState extends State<MyApp> {
                                     )));
                           }).toList()))
             ]),
-        backgroundColor: Colors.white,
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 12.5),
@@ -264,29 +262,38 @@ class _MyAppState extends State<MyApp> {
                   if (_isFutures)
                     Row(
                       children: [
-                        Checkbox(
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          value: _isLong,
-                          onChanged: (value) {
-                            setState(() {
-                              _isLong = true;
-                            });
-                          },
+                        Expanded(
+                          child: RadioListTile<bool>(
+                            contentPadding: EdgeInsets.zero, // Remove padding
+                            visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity),
+                            title: const Text('Long', style: defaultTextStyle),
+                            value: true,
+                            groupValue: _isLong,
+                            onChanged: (value) {
+                              setState(() {
+                                _isLong = true;
+                              });
+                            },
+                          ),
                         ),
-                        const Text('Long'),
-                        const SizedBox(width: 48),
-                        Checkbox(
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          value: _isLong ? false : true,
-                          onChanged: (value) {
-                            setState(() {
-                              _isLong = false;
-                            });
-                          },
+                        Expanded(
+                          child: RadioListTile<bool>(
+                            contentPadding: EdgeInsets.zero, // Remove padding
+                            visualDensity: const VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity),
+                            title: Text('Short', style: defaultTextStyle),
+                            value: false,
+                            groupValue: _isLong,
+                            onChanged: (value) {
+                              setState(() {
+                                _isLong = false;
+                              });
+                            },
+                          ),
                         ),
-                        const Text('Short')
                       ],
                     ),
                   /////////////////////////////////////////// Leverage//////////////////////
@@ -304,8 +311,7 @@ class _MyAppState extends State<MyApp> {
                   const SizedBox(height: 8),
                   Container(
                     decoration: BoxDecoration(
-                      color:
-                          Colors.grey.shade200, // Set background color to grey
+                      color: Colors.grey.shade400,
                       borderRadius:
                           BorderRadius.circular(10), // Rounded corners
                     ),
@@ -327,7 +333,6 @@ class _MyAppState extends State<MyApp> {
                           child: Text(
                             rate.keys.first,
                             style: TextStyle(
-                              color: Colors.black, // Text color
                               fontWeight: FontWeight.w500, // Text weight
                               fontSize: 16, // Text size
                             ),
