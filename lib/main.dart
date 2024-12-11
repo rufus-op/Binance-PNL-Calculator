@@ -87,6 +87,18 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
+  double selectedMaintenanceMarginRate = 0.004; // Default value (0.40%)
+
+  // Available Maintenance Margin Rates (converted to decimal for calculation)
+  List<Map<String, double>> marginRates = [
+    {'0.40%': 0.004},
+    {'0.50%': 0.005},
+    {'1.00%': 0.01},
+    {'2.00%': 0.02},
+    {'3.00%': 0.03},
+    {'5.00%': 0.05},
+  ];
+
 // Add these state variables
   List<Map<String, dynamic>> _dcaEntries =
       []; // Stores DCA entries with controllers
@@ -126,6 +138,63 @@ class _MyAppState extends State<MyApp> {
           brightness: _isDark ? Brightness.dark : Brightness.light),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.white,
+            toolbarHeight: MediaQuery.sizeOf(context).height * 0.05,
+            title: const Text(
+              'Crypto P/L Calculator',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            actions: [
+              GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      _isDark = !_isDark;
+                    });
+                    await _saveDarkModeSetting(_isDark);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                        _isDark ? Icons.light_mode_outlined : Icons.light_mode),
+                  )),
+              Padding(
+                  padding: const EdgeInsets.only(right: 5.0),
+                  child: PopupMenuButton<String>(
+                      onSelected: (String result) {
+                        print(result); // For demonstration purposes
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          _popupMenuOptions.map((String option) {
+                            return PopupMenuItem<String>(
+                                value: option,
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => WebViewScreen(
+                                              websiteUrl: _popupMenuWebUrls[
+                                                  _popupMenuOptions
+                                                      .indexOf(option)],
+                                              websiteName: option,
+                                            ),
+                                          ));
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(_popupMenuIcons[
+                                            _popupMenuOptions.indexOf(
+                                                option)]), // Display the corresponding icon
+                                        SizedBox(
+                                            width:
+                                                8), // Space between icon and text
+                                        Text(option),
+                                      ],
+                                    )));
+                          }).toList()))
+            ]),
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 12.5),
@@ -135,63 +204,6 @@ class _MyAppState extends State<MyApp> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(children: [
-                    const Text('Crypto P/L Calculator',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
-                    Spacer(),
-                    GestureDetector(
-                        onTap: () async {
-                          setState(() {
-                            _isDark = !_isDark;
-                          });
-                          await _saveDarkModeSetting(_isDark);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(_isDark
-                              ? Icons.light_mode_outlined
-                              : Icons.light_mode),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5.0),
-                      child: PopupMenuButton<String>(
-                        onSelected: (String result) {
-                          log(result); // For demonstration purposes
-                        },
-                        itemBuilder: (BuildContext context) =>
-                            _popupMenuOptions.map((String option) {
-                          return PopupMenuItem<String>(
-                              value: option,
-                              child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => WebViewScreen(
-                                            websiteUrl: _popupMenuWebUrls[
-                                                _popupMenuOptions
-                                                    .indexOf(option)],
-                                            websiteName: option,
-                                          ),
-                                        ));
-                                  },
-                                  child: Row(children: [
-                                    Icon(_popupMenuIcons[_popupMenuOptions.indexOf(
-                                        option)]), // Display the corresponding icon
-                                    SizedBox(
-                                        width:
-                                            8), // Space between icon and text
-                                    Text(option, style: defaultTextStyle)
-                                  ])));
-                        }).toList(),
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(12), // Rounded corners
-                        ),
-                      ),
-                    ),
-                  ]),
                   Row(
                     children: [
                       Expanded(
@@ -280,9 +292,50 @@ class _MyAppState extends State<MyApp> {
                   /////////////////////////////////////////// Leverage//////////////////////
                   if (_isFutures)
                     labelWithAsterisk(isRequired: true, label: "Leverage"),
+
                   const SizedBox(height: 8),
+
                   if (_isFutures)
                     TextFieldCustom(quantityController: _leverageController),
+
+                  const SizedBox(height: 8),
+                  // Modern Dropdown with custom background color and styling
+                  labelWithAsterisk(isRequired: true, label: "Fees"),
+                  const SizedBox(height: 8),
+                  Container(
+                    decoration: BoxDecoration(
+                      color:
+                          Colors.grey.shade200, // Set background color to grey
+                      borderRadius:
+                          BorderRadius.circular(10), // Rounded corners
+                    ),
+                    child: DropdownButtonFormField<double>(
+                      value: selectedMaintenanceMarginRate,
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedMaintenanceMarginRate = newValue!;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      ),
+                      items: marginRates.map((rate) {
+                        return DropdownMenuItem<double>(
+                          value: rate.values.first,
+                          child: Text(
+                            rate.keys.first,
+                            style: TextStyle(
+                              color: Colors.black, // Text color
+                              fontWeight: FontWeight.w500, // Text weight
+                              fontSize: 16, // Text size
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   labelWithAsterisk(isRequired: true, label: "Entry Price"),
                   const SizedBox(height: 8),
