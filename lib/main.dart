@@ -1,11 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socio_calcu/GoogleAd/banner_ad.dart';
 import 'package:socio_calcu/components/textfield.dart';
-// import 'package:socio_calcu/components/webview_screen.dart';
+import 'package:socio_calcu/components/webview_screen.dart';
 import 'package:socio_calcu/result_screen.dart';
 
 void main() {
@@ -38,99 +37,44 @@ class _MyAppState extends State<MyApp> {
   double totalDcaMargin = 0.0; // Store the total margin for DCA entries
 
 // Theme
-  // Future<void> _loadDarkModeSetting() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     _isDark = prefs.getBool('isDark') ?? false;
-  //   });
-  // }
+  Future<void> _loadDarkModeSetting() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isDark = prefs.getBool('isDark') ?? false;
+    });
+  }
 
 // save theme in shared pref
-  // Future<void> _saveDarkModeSetting(bool isDark) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   prefs.setBool('isDark', isDark);
-  // }
+  Future<void> _saveDarkModeSetting(bool isDark) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isDark', isDark);
+  }
 
 // popup Menu
-  // final List<String> _popupMenuOptions = [
-  //   'Fear and Greed Index',
-  //   'Liquidation Heatmap',
-  //   'Charts',
-  // ];
-  // final List<String> _popupMenuWebUrls = [
-  //   'https://alternative.me/crypto/fear-and-greed-index/',
-  //   'https://www.coinglass.com/pro/futures/LiquidationHeatMap',
-  //   'https://velo.xyz/chart',
-  // ];
-  // final List<IconData> _popupMenuIcons = [
-  //   Icons.graphic_eq_rounded, // Example icon for Fear and Greed Index
-  //   Icons.waves_rounded, // Example icon for Liquidation Heatmap
-  //   Icons.trending_up, // Example icon for Liquidation Heatmap
-  // ];
+  final List<String> _popupMenuOptions = [
+    'Banter Bubbles',
+    'Fear and Greed Index',
+    'Liquidation Heatmap',
+    'Charts',
+  ];
+  final List<String> _popupMenuWebUrls = [
+    'https://banterbubbles.com/',
+    'https://alternative.me/crypto/fear-and-greed-index/',
+    'https://www.coinglass.com/pro/futures/LiquidationHeatMap',
+    'https://velo.xyz/chart',
+  ];
+  final List<IconData> _popupMenuIcons = [
+    Icons.bubble_chart_outlined, // Example icon for Fear and Greed Index
+    Icons.graphic_eq_rounded, // Example icon for Fear and Greed Index
+    Icons.waves_rounded, // Example icon for Liquidation Heatmap
+    Icons.trending_up, // Example icon for Liquidation Heatmap
+  ];
 
-//  Row(children: [
-  //             const Text('Crypto P/L Calculator',
-  //                 style: TextStyle(
-  //                     fontSize: 16, fontWeight: FontWeight.w500)),
-  //             Spacer(),
-  //             GestureDetector(
-  //                 onTap: () async {
-  //                   setState(() {
-  //                     _isDark = !_isDark;
-  //                   });
-  //                   await _saveDarkModeSetting(_isDark);
-  //                 },
-  //                 child: Padding(
-  //                   padding: const EdgeInsets.all(8.0),
-  //                   child: Icon(_isDark
-  //                       ? Icons.light_mode_outlined
-  //                       : Icons.light_mode),
-  //                 )),
-  //             Padding(
-  //               padding: const EdgeInsets.only(right: 5.0),
-  //               child: PopupMenuButton<String>(
-  //                 onSelected: (String result) {
-  //                   log(result); // For demonstration purposes
-  //                 },
-  //                 itemBuilder: (BuildContext context) =>
-  //                     _popupMenuOptions.map((String option) {
-  //                   return PopupMenuItem<String>(
-  //                       value: option,
-  //                       child: InkWell(
-  //                           onTap: () {
-  //                             Navigator.push(
-  //                                 context,
-  //                                 MaterialPageRoute(
-  //                                   builder: (context) => WebViewScreen(
-  //                                     websiteUrl: _popupMenuWebUrls[
-  //                                         _popupMenuOptions
-  //                                             .indexOf(option)],
-  //                                     websiteName: option,
-  //                                   ),
-  //                                 ));
-  //                           },
-  //                           child: Row(children: [
-  //                             Icon(_popupMenuIcons[_popupMenuOptions.indexOf(
-  //                                 option)]), // Display the corresponding icon
-  //                             SizedBox(
-  //                                 width:
-  //                                     8), // Space between icon and text
-  //                             Text(option, style: defaultTextStyle)
-  //                           ])));
-  //                 }).toList(),
-  //                 shape: RoundedRectangleBorder(
-  //                   borderRadius:
-  //                       BorderRadius.circular(12), // Rounded corners
-  //                 ),
-  //               ),
-  //             ),
-  //           ]),
-
-  // @override
-  // void initState() {
-  // _loadDarkModeSetting();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    _loadDarkModeSetting();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -142,90 +86,6 @@ class _MyAppState extends State<MyApp> {
     _leverageController.dispose();
     super.dispose();
   }
-
-// Calculate Profit
-  Future<double> _calculateProfit(
-      {required double buyPrice, required double quantity}) async {
-    double sellPrice = double.parse(_sellPriceController.text);
-
-    double initialMarginRatio =
-        1; // Example value, adjust based on actual trading conditions
-
-    double stopLoss = double.parse(_stopLossController.text.trim().isNotEmpty
-        ? _stopLossController.text
-        : '0');
-
-    double leverage = _isFutures ? double.parse(_leverageController.text) : 1;
-
-    double profit = _isFutures
-        ? calculateFuturesProfit(
-            buyPrice, sellPrice, quantity, lev(leverage).toDouble(), _isLong)
-        : calculateSpotProfit(buyPrice, sellPrice, quantity);
-    double liquidationPrice = _isFutures
-        ? calculateLiquidationPrice(
-            buyPrice, initialMarginRatio, leverage, _isLong)
-        : 0.0; // Liquidation price is not applicable for spot trading
-
-    setState(() {
-      _profit = profit;
-      _liquidationPrice = liquidationPrice;
-      _stopLoss = _isFutures
-          ? calculateFuturesProfit(
-              buyPrice, stopLoss, quantity, lev(leverage).toDouble(), _isLong)
-          : calculateSpotProfit(buyPrice, stopLoss, quantity);
-    });
-    return buyPrice;
-  }
-
-// Calculate Liquidation Price
-  double calculateLiquidationPrice(double entryPrice, double initialMarginRatio,
-      double leverage, bool isLong) {
-    return isLong
-        ? entryPrice / (1 + (initialMarginRatio / leverage))
-        : entryPrice / (1 - (initialMarginRatio / leverage));
-  }
-
-// Calculate Spot Profit
-  double calculateSpotProfit(
-      double buyPrice, double sellPrice, double quantity) {
-    double profit = (((1 / buyPrice) - (1 / sellPrice)) * quantity) * sellPrice;
-    return profit;
-  }
-
-// Handle Leverage
-  double lev(double leve) {
-    if (leve > 0) {
-      return leve;
-    }
-    return leve = 1;
-  }
-
-// Calculate Futures Profit
-  double calculateFuturesProfit(double buyPrice, double sellPrice,
-      double quantity, double leverage, bool isLong) {
-    double profitLong =
-        (((1 / buyPrice) - (1 / sellPrice)) * quantity * leverage) * sellPrice;
-    double profitShort =
-        (((1 / sellPrice) - (1 / buyPrice)) * quantity * leverage) * sellPrice;
-
-    return isLong ? profitLong : profitShort;
-  }
-
-  static const TextStyle defaultTextStyle =
-      TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
-
-//////////////////////////////////////////////////////
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-//////////////////////////////////////////////////////
 
 // Add these state variables
   List<Map<String, dynamic>> _dcaEntries =
@@ -254,6 +114,9 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  static const TextStyle defaultTextStyle =
+      TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -272,6 +135,63 @@ class _MyAppState extends State<MyApp> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(children: [
+                    const Text('Crypto P/L Calculator',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500)),
+                    Spacer(),
+                    GestureDetector(
+                        onTap: () async {
+                          setState(() {
+                            _isDark = !_isDark;
+                          });
+                          await _saveDarkModeSetting(_isDark);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(_isDark
+                              ? Icons.light_mode_outlined
+                              : Icons.light_mode),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5.0),
+                      child: PopupMenuButton<String>(
+                        onSelected: (String result) {
+                          log(result); // For demonstration purposes
+                        },
+                        itemBuilder: (BuildContext context) =>
+                            _popupMenuOptions.map((String option) {
+                          return PopupMenuItem<String>(
+                              value: option,
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => WebViewScreen(
+                                            websiteUrl: _popupMenuWebUrls[
+                                                _popupMenuOptions
+                                                    .indexOf(option)],
+                                            websiteName: option,
+                                          ),
+                                        ));
+                                  },
+                                  child: Row(children: [
+                                    Icon(_popupMenuIcons[_popupMenuOptions.indexOf(
+                                        option)]), // Display the corresponding icon
+                                    SizedBox(
+                                        width:
+                                            8), // Space between icon and text
+                                    Text(option, style: defaultTextStyle)
+                                  ])));
+                        }).toList(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(12), // Rounded corners
+                        ),
+                      ),
+                    ),
+                  ]),
                   Row(
                     children: [
                       Expanded(
@@ -540,8 +460,7 @@ class _MyAppState extends State<MyApp> {
                             // Debug log to check the calculation
                             log('Initial Entry Price: $initialPrice');
                             log('Initial Margin: $initialMargin');
-                            log(
-                                'Total DCA Entry Price (after DCA): $totalDcaEntry');
+                            log('Total DCA Entry Price (after DCA): $totalDcaEntry');
                             log('Total Margin: $totalDcaMargin');
 
                             // Calculate profit and other required values based on the final entry price and margin
@@ -585,5 +504,73 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  // Calculate Profit
+  Future<double> _calculateProfit(
+      {required double buyPrice, required double quantity}) async {
+    double sellPrice = double.parse(_sellPriceController.text);
+
+    double initialMarginRatio =
+        1; // Example value, adjust based on actual trading conditions
+
+    double stopLoss = double.parse(_stopLossController.text.trim().isNotEmpty
+        ? _stopLossController.text
+        : '0');
+
+    double leverage = _isFutures ? double.parse(_leverageController.text) : 1;
+
+    double profit = _isFutures
+        ? calculateFuturesProfit(
+            buyPrice, sellPrice, quantity, lev(leverage).toDouble(), _isLong)
+        : calculateSpotProfit(buyPrice, sellPrice, quantity);
+    double liquidationPrice = _isFutures
+        ? calculateLiquidationPrice(
+            buyPrice, initialMarginRatio, leverage, _isLong)
+        : 0.0; // Liquidation price is not applicable for spot trading
+
+    setState(() {
+      _profit = profit;
+      _liquidationPrice = liquidationPrice;
+      _stopLoss = _isFutures
+          ? calculateFuturesProfit(
+              buyPrice, stopLoss, quantity, lev(leverage).toDouble(), _isLong)
+          : calculateSpotProfit(buyPrice, stopLoss, quantity);
+    });
+    return buyPrice;
+  }
+
+// Calculate Liquidation Price
+  double calculateLiquidationPrice(double entryPrice, double initialMarginRatio,
+      double leverage, bool isLong) {
+    return isLong
+        ? entryPrice / (1 + (initialMarginRatio / leverage))
+        : entryPrice / (1 - (initialMarginRatio / leverage));
+  }
+
+// Calculate Spot Profit
+  double calculateSpotProfit(
+      double buyPrice, double sellPrice, double quantity) {
+    double profit = (((1 / buyPrice) - (1 / sellPrice)) * quantity) * sellPrice;
+    return profit;
+  }
+
+// Handle Leverage
+  double lev(double leve) {
+    if (leve > 0) {
+      return leve;
+    }
+    return leve = 1;
+  }
+
+// Calculate Futures Profit
+  double calculateFuturesProfit(double buyPrice, double sellPrice,
+      double quantity, double leverage, bool isLong) {
+    double profitLong =
+        (((1 / buyPrice) - (1 / sellPrice)) * quantity * leverage) * sellPrice;
+    double profitShort =
+        (((1 / sellPrice) - (1 / buyPrice)) * quantity * leverage) * sellPrice;
+
+    return isLong ? profitLong : profitShort;
   }
 }
