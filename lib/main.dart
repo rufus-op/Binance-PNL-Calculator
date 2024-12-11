@@ -243,12 +243,12 @@ class _MyAppState extends State<MyApp> {
                     ],
                   ),
                   const SizedBox(height: 3),
-                  const Text('Cost / Margin*', style: defaultTextStyle),
+                  labelWithAsterisk(isRequired: true, label: "Cost / Margin"),
                   const SizedBox(height: 8),
                   TextFieldCustom(quantityController: _quantityController),
                   if (_isFutures) const SizedBox(height: 8),
                   if (_isFutures)
-                    const Text('Position*', style: defaultTextStyle),
+                    labelWithAsterisk(isRequired: true, label: "Position"),
                   if (_isFutures)
                     Row(
                       children: [
@@ -279,20 +279,20 @@ class _MyAppState extends State<MyApp> {
                     ),
                   /////////////////////////////////////////// Leverage//////////////////////
                   if (_isFutures)
-                    const Text('Leverage*', style: defaultTextStyle),
+                    labelWithAsterisk(isRequired: true, label: "Leverage"),
                   const SizedBox(height: 8),
                   if (_isFutures)
                     TextFieldCustom(quantityController: _leverageController),
                   const SizedBox(height: 8),
-                  const Text('Entry Price*', style: defaultTextStyle),
+                  labelWithAsterisk(isRequired: true, label: "Entry Price"),
                   const SizedBox(height: 8),
                   TextFieldCustom(quantityController: _buyPriceController),
                   const SizedBox(height: 8),
-                  const Text('Exit Price*', style: defaultTextStyle),
+                  labelWithAsterisk(isRequired: true, label: "Exit Price"),
                   const SizedBox(height: 8),
                   TextFieldCustom(quantityController: _sellPriceController),
                   const SizedBox(height: 8),
-                  const Text('Stop loss', style: defaultTextStyle),
+                  labelWithAsterisk(isRequired: false, label: "Stop loss"),
                   const SizedBox(height: 8),
                   TextFieldCustom(quantityController: _stopLossController),
                   const SizedBox(height: 10),
@@ -503,6 +503,17 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+    );
+  }
+
+// Helper Widget for Label with Asterisk
+  Widget labelWithAsterisk({required String label, required bool isRequired}) {
+    return Row(
+      children: [
+        Text(label, style: defaultTextStyle),
+        if (isRequired)
+          Text('  *', style: defaultTextStyle.copyWith(color: Colors.red)),
+      ],
     );
   }
 
