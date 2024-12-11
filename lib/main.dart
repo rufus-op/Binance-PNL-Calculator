@@ -260,87 +260,74 @@ class _MyAppState extends State<MyApp> {
                   if (_isFutures)
                     labelWithAsterisk(isRequired: true, label: "Position"),
                   if (_isFutures)
-                    Row(
-                      children: [
-                        Expanded(
+                    Row(children: [
+                      Expanded(
                           child: RadioListTile<bool>(
-                            contentPadding: EdgeInsets.zero, // Remove padding
-                            visualDensity: const VisualDensity(
-                                horizontal: VisualDensity.minimumDensity,
-                                vertical: VisualDensity.minimumDensity),
-                            title: const Text('Long', style: defaultTextStyle),
-                            value: true,
-                            groupValue: _isLong,
-                            onChanged: (value) {
-                              setState(() {
-                                _isLong = true;
-                              });
-                            },
-                          ),
-                        ),
-                        Expanded(
+                              contentPadding: EdgeInsets.zero, // Remove padding
+                              visualDensity: const VisualDensity(
+                                  horizontal: VisualDensity.minimumDensity,
+                                  vertical: VisualDensity.minimumDensity),
+                              title:
+                                  const Text('Long', style: defaultTextStyle),
+                              value: true,
+                              groupValue: _isLong,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isLong = true;
+                                });
+                              })),
+                      Expanded(
                           child: RadioListTile<bool>(
-                            contentPadding: EdgeInsets.zero, // Remove padding
-                            visualDensity: const VisualDensity(
-                                horizontal: VisualDensity.minimumDensity,
-                                vertical: VisualDensity.minimumDensity),
-                            title: Text('Short', style: defaultTextStyle),
-                            value: false,
-                            groupValue: _isLong,
-                            onChanged: (value) {
-                              setState(() {
-                                _isLong = false;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  /////////////////////////////////////////// Leverage//////////////////////
+                              contentPadding: EdgeInsets.zero, // Remove padding
+                              visualDensity: const VisualDensity(
+                                  horizontal: VisualDensity.minimumDensity,
+                                  vertical: VisualDensity.minimumDensity),
+                              title: Text('Short', style: defaultTextStyle),
+                              value: false,
+                              groupValue: _isLong,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isLong = false;
+                                });
+                              }))
+                    ]),
+                  // 
+                  ////////////// Leverage //////////////////////
                   if (_isFutures)
                     labelWithAsterisk(isRequired: true, label: "Leverage"),
-
                   const SizedBox(height: 8),
-
                   if (_isFutures)
                     TextFieldCustom(quantityController: _leverageController),
-
                   const SizedBox(height: 8),
-                  // Modern Dropdown with custom background color and styling
                   labelWithAsterisk(isRequired: true, label: "Fees"),
                   const SizedBox(height: 8),
                   Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade400,
-                      borderRadius:
-                          BorderRadius.circular(10), // Rounded corners
-                    ),
-                    child: DropdownButtonFormField<double>(
-                      value: selectedMaintenanceMarginRate,
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedMaintenanceMarginRate = newValue!;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade400,
+                        borderRadius:
+                            BorderRadius.circular(10), // Rounded corners
                       ),
-                      items: marginRates.map((rate) {
-                        return DropdownMenuItem<double>(
-                          value: rate.values.first,
-                          child: Text(
-                            rate.keys.first,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500, // Text weight
-                              fontSize: 16, // Text size
-                            ),
+                      child: DropdownButtonFormField<double>(
+                          value: selectedMaintenanceMarginRate,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedMaintenanceMarginRate = newValue!;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 16),
                           ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
+                          items: marginRates.map((rate) {
+                            return DropdownMenuItem<double>(
+                                value: rate.values.first,
+                                child: Text(rate.keys.first,
+                                    style: TextStyle(
+                                        fontWeight:
+                                            FontWeight.w500, // Text weight
+                                        fontSize: 16)));
+                          }).toList())),
                   const SizedBox(height: 8),
                   labelWithAsterisk(isRequired: true, label: "Entry Price"),
                   const SizedBox(height: 8),
