@@ -9,10 +9,12 @@ class ResultScreen extends StatelessWidget {
       required this.profit,
       required this.stopLoss,
       required this.isFutures,
+      required this.entryPrice,
       required this.liquidationPrice});
   final double profit;
   final double liquidationPrice;
   final double stopLoss;
+  final double entryPrice;
   final bool isFutures;
 
   @override
@@ -68,8 +70,8 @@ class ResultScreen extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.35,
-                            child: const Text(
-                              'Profit/Loss',
+                            child:  Text(
+                              'Profit/Loss $entryPrice',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
